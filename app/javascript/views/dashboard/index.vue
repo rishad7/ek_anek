@@ -44,7 +44,7 @@
               </div> -->
               <div class="ml-8">
                 <img
-                  @click="deleteModel(project.id, project.attributes.title)"
+                  @click="deleteFile(project.id, project.attributes.title)"
                   class="cursor-pointer"
                   src="/assets/icons/delete_icon.svg"
                 />
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-// import ProjectFactory from "../../api/resources/upload";
+import UploadFactory from "../../api/resources/upload";
 export default {
   name: "dashboard-index",
   props: {
@@ -109,16 +109,16 @@ export default {
     predict(hashid) {
       window.location = "../dashboard/" + hashid;
     },
-    deleteModel(id, modelName) {
+    deleteFile(id, fileName) {
       this.$swal({
         title: "Are you sure?",
-        text: `Are sure that you want to delete ${modelName} model?`,
+        text: `Are sure that you want to delete ${fileName} file?`,
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Delete",
       }).then((result) => {
         if (result.value) {
-          ProjectFactory.delete(id).then((response) => {
+          UploadFactory.delete(id).then((response) => {
             if (response.status === 204) {
               const index = this.uploadList.findIndex((res) => res.id === id);
               if (index != -1) {
@@ -126,7 +126,7 @@ export default {
               }
               this.$swal({
                 title: "",
-                text: `${modelName} has been removed`,
+                text: `${fileName} has been removed`,
                 type: "success",
                 toast: true,
                 position: "bottom-end",
@@ -163,7 +163,7 @@ export default {
 
       console.log(transferData);
       this.$modal.show("training-modal");
-      ProjectFactory.train_model({ id: model.id }).then((response) => {
+      UploadFactory.train_model({ id: model.id }).then((response) => {
         if (response.status === 201) {
           this.uploadList[index].attributes.is_trained = true;
           this.$modal.hide("training-modal");

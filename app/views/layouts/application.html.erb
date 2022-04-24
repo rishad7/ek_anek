@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta content="<%= @ekanek_token %>" name="ekanek"/>
 
     <% if Rails.env.development? %>
       <meta content="http://localhost:3000/" name="base"/>
