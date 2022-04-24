@@ -8,8 +8,10 @@
             <% if user_signed_in? %>
                 <p class="text-gray-500"><%= current_user.email %></p>
                 <%= image_tag user_avatar(current_user, 100), class: "ml-4 h-10 w-10 object-cover rounded-full" %>
-                <a rel="nofollow" data-method="delete" href="<%= destroy_user_session_path %>">
-                    <img class="ml-12" src="/assets/logout.svg" />
+                <a title="Sign Out" rel="nofollow" data-method="delete" href="<%= destroy_user_session_path %>">
+                    <div class="ml-4 h-10 flex items-center">
+                        <i class="fa fa-power-off text-red-500 text-3xl"></i>
+                    </div>
                 </a>
             <% else %>
                 <a title="Sign In" href="<%= new_user_session_path %>">

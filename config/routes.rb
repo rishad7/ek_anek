@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  get 'upload/create'
   root 'static#home'
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get '/dashboard', to: 'dashboard#index'
+  get '/upload', to: 'upload#create', as: 'upload_file'
 end

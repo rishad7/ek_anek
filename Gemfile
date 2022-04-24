@@ -56,3 +56,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise', '~> 4.8'
+gem 'font-awesome-rails', '~> 4.7', '>= 4.7.0.7'
+gem 'fast_jsonapi'
