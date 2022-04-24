@@ -20,31 +20,31 @@
       </div>
       <div class="tbody flex flex-col b-b">
         <div
-          v-for="(project, index) in uploadList"
+          v-for="(upload, index) in uploadList"
           :key="index"
           class="py-4 flex items-center b-b"
         >
           <div class="w-220 flex items-center">
             <div class="ml-4 text-color-1 text-sm">
-              {{ project.attributes.title }}
+              {{ upload.attributes.title }}
             </div>
           </div>
           <div class="w-228 text-color-1 f-13">
-            {{ project.attributes.description }}
+            {{ upload.attributes.description }}
           </div>
           <div class="text-color-1 f-13">file upload</div>
           <div class="flex-grow">
             <div class="flex justify-end items-center">
               <!-- <div>
                 <img
-                  @click="editModel(project.attributes.hashid)"
+                  @click="editModel(upload.attributes.hashid)"
                   class="ml-8 cursor-pointer"
                   src="/assets/icons/edit_icon.svg"
                 />
               </div> -->
               <div class="ml-8">
                 <img
-                  @click="deleteFile(project.id, project.attributes.title)"
+                  @click="deleteFile(upload.id, upload.attributes.title)"
                   class="cursor-pointer"
                   src="/assets/icons/delete_icon.svg"
                 />
