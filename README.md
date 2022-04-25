@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Follow this instruction to setup the project in your local
 
-Things you may want to cover:
+- git clone https://github.com/rishad7/ek_anek.git
 
-* Ruby version
+- cd ek_anek
 
-* System dependencies
+- bundle install
 
-* Configuration
+- yarn install
 
-* Database creation
+- rails db:create
 
-* Database initialization
+- rails db:migrate
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- foreman start
