@@ -15,3 +15,5 @@ Follow this instruction to setup the project in your local
 - rails db:migrate
 
 - foreman start
+
+If the webpacker error shown, Please do refresh the page.

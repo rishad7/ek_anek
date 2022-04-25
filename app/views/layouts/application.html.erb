@@ -13,6 +13,8 @@
       <meta content="https://<%= Rails.application.credentials[:production][:host] %>/" name="base"/>
     <% end %>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -20,8 +22,8 @@
   <body>
     <%= render 'layouts/header' %>
     <div class="container mx-auto">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+      <p class="notice animate__animated animate__fadeOut"><%= notice %></p>
+      <p class="alert animate__animated animate__fadeOut"><%= alert %></p>
       <%= yield %>
     </div>
   </body>
