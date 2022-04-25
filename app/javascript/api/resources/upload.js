@@ -2,9 +2,9 @@ import ApiConnection from "../api_connection";
 const resource_api_path = "/upload";
 
 export default {
-  //   create(payload) {
-  //     return ApiConnection.post(`${resource_api_path}`, payload);
-  //   },
+  create(payload) {
+    return ApiConnection.post(`${resource_api_path}`, payload);
+  },
   //   update(id, payload) {
   //     return ApiConnection.patch(`${resource_api_path}/${id}`, payload);
   //   },

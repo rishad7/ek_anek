@@ -1,3 +1,3 @@
 class UploadSerializer < ApplicationSerializer
-  attributes :title, :description 
+  attributes :title, :description, :file
 end

@@ -17,6 +17,7 @@ const api = axios.create({
     Accept: "application/vnd.krips+json;version=1",
     Authorization: "Bearer " + ekAnekToken,
     "X-CSRF-Token": csrfToken,
+    "Content-Type": "multipart/form-data",
   },
 });
 

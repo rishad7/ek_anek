@@ -32,7 +32,9 @@
           <div class="w-228 text-color-1 f-13">
             {{ upload.attributes.description }}
           </div>
-          <div class="text-color-1 f-13">file upload</div>
+          <div class="text-color-1 f-13">
+            <img :src="upload.attributes.file" />
+          </div>
           <div class="flex-grow">
             <div class="flex justify-end items-center">
               <!-- <div>
