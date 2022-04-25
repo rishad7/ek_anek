@@ -41,8 +41,39 @@
             class="hidden"
             @change="onFilePicked"
           />
-          <div class="mt-4 cursor-pointer" @click.stop="openAttachment">
-            + Add File
+          <div class="px-4 mt-4" @click.stop="openAttachment">
+            <div v-if="!form.file" class="cursor-pointer text-blue-500">
+              + Add File
+            </div>
+            <div v-else>
+              <div
+                v-if="!isUploading"
+                class="flex justify-between items-center"
+              >
+                <div class="flex justify-start items-center">
+                  <i class="fa fa-paperclip mr-2"></i>
+                  <div class="text-sm">{{ form.file.name }}</div>
+                </div>
+                <div>
+                  <svg
+                    @click.stop="clearFile"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 cursor-pointer"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div v-else class="text-center text-blue-500">
+                Uploading...
+              </div>
+            </div>
           </div>
           <div class="flex-auto flex items-end justify-end">
             <button
@@ -75,6 +106,7 @@ export default {
         description: "",
         file: null,
       },
+      isUploading: false,
     };
   },
   beforeMount() {
@@ -84,7 +116,11 @@ export default {
   },
   computed: {
     isValidForm() {
-      if (this.form.title === "" || this.form.description === "") {
+      if (
+        this.form.title === "" ||
+        this.form.description === "" ||
+        this.form.file === null
+      ) {
         return false;
       } else {
         return true;
@@ -101,17 +137,12 @@ export default {
     onFilePicked() {
       this.form.file = this.$refs.fileInput.files[0];
     },
+    clearFile() {
+      this.form.file = null;
+    },
     submitForm() {
       if (this.isValidForm) {
-        // const formData = new FormData();
-        // formData.append("title", this.form.title);
-        // formData.append("description", this.form.description);
-        // formData.append("file", this.form.file);
-        // const headers = { "Content-Type": "multipart/form-data" };
-        // axios.post('https://httpbin.org/post', formData, { headers }).then((res) => {
-        //   res.data.files; // binary representation of the file
-        //   res.status; // HTTP status
-        // });
+        this.isUploading = true;
 
         const params = {
           title: this.form.title,
@@ -127,6 +158,7 @@ export default {
 
         UploadFactory.create(formData).then((response) => {
           if (response.status === 201) {
+            this.isUploading = false;
             this.$swal({
               title: "",
               text: `${this.form.title} has been uploaded`,

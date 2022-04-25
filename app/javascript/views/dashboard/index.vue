@@ -32,28 +32,45 @@
           <div class="w-228 text-color-1 f-13">
             {{ upload.attributes.description }}
           </div>
-          <div class="text-color-1 f-13">
-            <img :src="upload.attributes.file" />
+          <div class="flex-grow flex justify-start items-center text-color-1">
+            <div class="flex-grow flex flex-col mr-4">
+              <div class="f-13">{{ upload.attributes.filename }}</div>
+              <div class="flex justify-start flex-wrap items-center">
+                <div class="f-10 mr-2">{{ upload.attributes.file_type }}</div>
+                <div class="f-8">
+                  {{ upload.attributes.file_size | bytesToSize }}
+                </div>
+              </div>
+            </div>
+            <div class="flex-shrink-0 mr-4">
+              <a title="click to view" :href="upload.attributes.attachment"
+                ><i class="fa fa-eye text-xl"></i
+              ></a>
+            </div>
+            <div class="flex-shrink-0">
+              <a
+                title="click to download"
+                download
+                :href="upload.attributes.attachment"
+                ><i class="fa fa-download"></i
+              ></a>
+            </div>
           </div>
-          <div class="flex-grow">
+          <div class="flex-shrink-0">
             <div class="flex justify-end items-center">
-              <!-- <div>
-                <img
-                  @click="editModel(upload.attributes.hashid)"
-                  class="ml-8 cursor-pointer"
-                  src="/assets/icons/edit_icon.svg"
-                />
-              </div> -->
-              <div class="ml-8">
+              <div class="ml-8 mr-4">
                 <img
                   @click="deleteFile(upload.id, upload.attributes.title)"
                   class="cursor-pointer"
                   src="/assets/icons/delete_icon.svg"
                 />
               </div>
-              <!-- <div class="ml-8">
-                <img class="cursor-pointer" src="/assets/icons/menu_icon.svg" />
-              </div> -->
+              <div>
+                <i
+                  class="fa fa-share text-xl text-color-1 cursor-pointer"
+                  title="Share"
+                ></i>
+              </div>
             </div>
           </div>
         </div>
@@ -103,6 +120,14 @@ export default {
   },
   beforeMount() {
     this.uploadList = JSON.parse(this.uploads).data;
+  },
+  filters: {
+    bytesToSize(bytes) {
+      var sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+      if (bytes == 0) return "0 Byte";
+      var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+      return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
+    },
   },
   methods: {
     uploadANewFile() {
@@ -205,6 +230,12 @@ export default {
   }
   .f-13 {
     font-size: 13px;
+  }
+  .f-10 {
+    font-size: 10px;
+  }
+  .f-8 {
+    font-size: 8px;
   }
 }
 .h-15 {
