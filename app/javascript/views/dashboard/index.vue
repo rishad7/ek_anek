@@ -67,6 +67,7 @@
               </div>
               <div>
                 <i
+                  @click.stop="shareFile(upload.attributes.tiny_url)"
                   class="fa fa-share text-xl text-color-1 cursor-pointer"
                   title="Share"
                 ></i>
@@ -79,20 +80,48 @@
     <div v-else class="text-center text-color-1 mt-16">
       No files uploaded yet!
     </div>
-    <!-- <modal name="training-modal" width="420px" height="320px">
-      <div class="flex flex-col items-center">
-        <h1 class="text-color-1 text-2xl font-semibold mt-12">
-          Training in progress
-        </h1>
-        <p class="w-257 text-color-2 text-sm mt-8 text-center">
-          We will notify you once the training of the models are completed
-        </p>
-        <p class="w-267 text-color-2 text-sm mt-12 text-center">
-          This process will take about 60 - 90 mins depending on the size & no.
-          of the images uploaded to train the model
-        </p>
+    <modal name="share-modal" width="420px" height="auto">
+      <div class="flex flex-col items-center p-12">
+        <div class="flex justify-between items-center w-full">
+          <h1 class="text-color-1 text-2xl font-semibold">
+            Share
+          </h1>
+          <div
+            @click="$modal.hide('share-modal')"
+            class="text-color-2 cursor-pointer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+        </div>
+        <div class="mt-8 flex justify-start w-full share-div">
+          <div
+            :class="{ 'bg-blue-300': isCopied }"
+            class="flex-grow px-4 py-2 overflow-x-auto"
+          >
+            {{ shareUrl }}
+          </div>
+          <div
+            @click="copyToClipBoard"
+            class="flex-shrink-0 copy-div w-20 py-2 curser-pointer flex items-center justify-center cursor-pointer"
+          >
+            {{ getText }}
+          </div>
+        </div>
       </div>
-    </modal> -->
+    </modal>
   </div>
 </template>
 
@@ -107,7 +136,19 @@ export default {
   data() {
     return {
       uploadList: [],
+      shareUrl: "",
+      isCopied: false,
     };
+  },
+  watch: {
+    isCopied(val) {
+      if (val) {
+        let $this = this;
+        setTimeout(() => {
+          $this.isCopied = false;
+        }, 1000);
+      }
+    },
   },
   computed: {
     hasUploads() {
@@ -115,6 +156,13 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    getText() {
+      if (this.isCopied) {
+        return "Copied!";
+      } else {
+        return "Copy";
       }
     },
   },
@@ -132,9 +180,6 @@ export default {
   methods: {
     uploadANewFile() {
       window.location = "../upload";
-    },
-    predict(hashid) {
-      window.location = "../dashboard/" + hashid;
     },
     deleteFile(id, fileName) {
       this.$swal({
@@ -165,37 +210,13 @@ export default {
         }
       });
     },
-    editModel(hashid) {
-      window.location = "upload/" + hashid;
+    shareFile(url) {
+      this.shareUrl = url;
+      this.$modal.show("share-modal");
     },
-    trainModel(index, model) {
-      let transferData = {
-        user_id: this.current_user_id,
-        data: [],
-      };
-
-      model.attributes.project_classes.data.forEach((item, index) => {
-        transferData.data.push({
-          class_name: item.attributes.name,
-          images: [],
-        });
-        item.attributes.project_class_images_processed.data.forEach((img) => {
-          const imgUrl =
-            img.attributes.payload.endpoint +
-            "/" +
-            img.attributes.payload.assets[0].derivatives.medium.id;
-          transferData.data[index].images.push(imgUrl);
-        });
-      });
-
-      console.log(transferData);
-      this.$modal.show("training-modal");
-      UploadFactory.train_model({ id: model.id }).then((response) => {
-        if (response.status === 201) {
-          this.uploadList[index].attributes.is_trained = true;
-          this.$modal.hide("training-modal");
-        }
-      });
+    async copyToClipBoard() {
+      await navigator.clipboard.writeText(this.shareUrl);
+      this.isCopied = true;
     },
   },
 };
@@ -221,6 +242,9 @@ export default {
 .b-b-2 {
   border-bottom: 2px solid #e8e8e8;
 }
+.text-color-2 {
+  color: #a1a1ac;
+}
 @responsive {
   .w-220 {
     width: 220px;
@@ -237,28 +261,21 @@ export default {
   .f-8 {
     font-size: 8px;
   }
+  .h-15 {
+    height: 15px;
+  }
+  .w-257 {
+    width: 257px;
+  }
+  .w-267 {
+    width: 267px;
+  }
 }
-.h-15 {
-  height: 15px;
+.share-div {
+  border: 2px solid #e8e8e8;
 }
-.train-model-btn {
-  background-color: #456fff;
-  border-radius: 8px;
-}
-.trained-model-btn {
-  border: 1px solid #456fff;
-  border-radius: 8px;
-  color: #456fff;
-}
-.predict-btn {
-  background-color: #456fff;
-  border-radius: 8px;
-}
-.w-257 {
-  width: 257px;
-}
-.w-267 {
-  width: 267px;
+.copy-div {
+  border-left: 2px solid #e8e8e8;
 }
 </style>
 <style>

@@ -9,6 +9,8 @@ const swalOptions = {
   cancelButtonColor: "#707070",
 };
 Vue.use(VueSweetalert2, swalOptions);
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 import DashboardIndex from "../../views/dashboard/index.vue";
 
 document.addEventListener("DOMContentLoaded", () => {

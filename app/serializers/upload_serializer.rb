@@ -17,4 +17,13 @@ class UploadSerializer < ApplicationSerializer
     upload.file.byte_size
   end
 
+  attribute :tiny_url do |upload|
+    if Rails.env.development?
+      base_url = 'localhost:3000'
+    elsif Rails.env.production?
+      base_url = Rails.application.credentials[:production][:host]
+    end
+    Rails.application.routes.url_helpers.rails_blob_url(upload.file, host: base_url)
+  end
+
 end
